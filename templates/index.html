@@ -3,137 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Nástroje Scraper</title>
+    <title>🤖 AI Nástroje Scraper</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f5f5f5;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
         }
         
         .container {
             background: white;
+            border-radius: 15px;
             padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
         
         h1 {
             color: #333;
             text-align: center;
             margin-bottom: 30px;
+            font-size: 2.5em;
         }
         
-        .input-section {
-            margin-bottom: 30px;
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
         }
         
         input[type="url"] {
-            width: 70%;
+            width: 100%;
             padding: 12px;
-            font-size: 16px;
             border: 2px solid #ddd;
-            border-radius: 4px;
-            margin-right: 10px;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        
+        input[type="url"]:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
         }
         
         button {
-            padding: 12px 20px;
-            background-color: #007bff;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 4px;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 18px;
             cursor: pointer;
-            font-size: 16px;
+            transition: transform 0.2s;
+            width: 100%;
         }
         
         button:hover {
-            background-color: #0056b3;
+            transform: translateY(-2px);
         }
         
         button:disabled {
-            background-color: #ccc;
+            background: #ccc;
             cursor: not-allowed;
+            transform: none;
         }
         
-        .status {
-            margin: 20px 0;
-            padding: 10px;
-            border-radius: 4px;
-            font-weight: bold;
+        .status-area {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: none;
         }
         
-        .status.loading {
-            background-color: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeaa7;
+        .status-message {
+            font-size: 16px;
+            margin-bottom: 15px;
         }
         
-        .status.success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
         }
         
-        .status.error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
         }
         
         .results-section {
             margin-top: 30px;
+            display: none;
         }
         
-        .batch-header {
+        .results-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
-        }
-        
-        .batch-info {
-            font-weight: bold;
-            color: #333;
-        }
-        
-        .copy-btn {
-            background-color: #28a745;
-            padding: 8px 15px;
-            font-size: 14px;
-        }
-        
-        .copy-btn:hover {
-            background-color: #218838;
-        }
-        
-        .url-container {
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            padding: 15px;
             margin-bottom: 20px;
-            font-family: monospace;
-            white-space: pre-wrap;
-            max-height: 300px;
-            overflow-y: auto;
         }
         
-        .load-more {
-            text-align: center;
+        .download-btn {
+            background: #28a745;
+            padding: 10px 20px;
+            font-size: 14px;
+            width: auto;
+        }
+        
+        .url-list {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 15px;
+        }
+        
+        .url-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            word-break: break-all;
+        }
+        
+        .url-item:last-child {
+            border-bottom: none;
+        }
+        
+        .url-item a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .url-item a:hover {
+            text-decoration: underline;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
             margin-top: 20px;
         }
         
-        .progress {
-            margin: 10px 0;
-            text-align: center;
-            color: #666;
+        .page-btn {
+            background: #6c757d;
+            padding: 8px 15px;
+            font-size: 14px;
+            width: auto;
+            min-width: 40px;
         }
         
-        .hidden {
-            display: none;
+        .jobs-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .job-item {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .job-status {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .job-status.completed { color: #28a745; }
+        .job-status.running { color: #ffc107; }
+        .job-status.error { color: #dc3545; }
+        
+        .error-message {
+            color: #dc3545;
+            background: #f8d7da;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        
+        .success-message {
+            color: #155724;
+            background: #d4edda;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
         }
     </style>
 </head>
@@ -141,182 +218,284 @@
     <div class="container">
         <h1>🤖 AI Nástroje Scraper</h1>
         
-        <div class="input-section">
-            <input type="url" id="urlInput" placeholder="Zadejte URL stránky pro scraping (např. https://example.com)" required>
-            <div style="margin: 10px 0;">
-                <label style="font-size: 14px;">
-                    <input type="checkbox" id="testMode" checked> 
-                    <strong>Test mód</strong> (najde jen 10 AI nástrojů pro rychlé testování)
-                </label>
+        <form id="scrapeForm">
+            <div class="form-group">
+                <label for="url">🌐 URL stránky s AI nástroji:</label>
+                <input type="url" id="url" name="url" placeholder="https://www.futurepedia.io/" required>
             </div>
-            <button onclick="startScraping()" id="scrapeBtn">Spustit Scraping</button>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="testMode" name="testMode">
+                <label for="testMode">Test mód (najde jen 10 AI nástrojů pro rychlé testování)</label>
+            </div>
+            
+            <button type="submit" id="startButton">🚀 Spustit Scraping</button>
+        </form>
+
+        <div class="status-area" id="statusArea">
+            <div class="status-message" id="statusMessage"></div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div id="statusDetails"></div>
         </div>
-        
-        <div id="status" class="status hidden"></div>
-        
-        <div id="results" class="results-section hidden">
-            <h3>📋 Nalezené AI Nástroje</h3>
-            <div id="batches"></div>
-            <div id="loadMore" class="load-more hidden">
-                <button onclick="loadNextBatch()">Načíst další dávku (50 URL)</button>
+
+        <div class="results-section" id="resultsSection">
+            <div class="results-header">
+                <h3 id="resultsTitle">📋 Nalezené AI Nástroje</h3>
+                <button class="download-btn" id="downloadBtn">📥 Stáhnout Seznam</button>
             </div>
+            
+            <div class="url-list" id="urlList"></div>
+            
+            <div class="pagination" id="pagination"></div>
+        </div>
+
+        <div class="jobs-section">
+            <h3>📊 Historie Úloh</h3>
+            <div id="jobsList"></div>
         </div>
     </div>
 
     <script>
-        let currentOffset = 0;
-        let totalFound = 0;
-        
-        function showStatus(message, type) {
-            const status = document.getElementById('status');
-            status.textContent = message;
-            status.className = `status ${type}`;
-            status.classList.remove('hidden');
-        }
-        
-        function hideStatus() {
-            document.getElementById('status').classList.add('hidden');
-        }
-        
+        let currentJobId = null;
+        let statusInterval = null;
+        let currentPage = 1;
+
+        document.getElementById('scrapeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            startScraping();
+        });
+
         async function startScraping() {
-            const url = document.getElementById('urlInput').value.trim();
+            const url = document.getElementById('url').value;
             const testMode = document.getElementById('testMode').checked;
+            const startButton = document.getElementById('startButton');
             
-            if (!url) {
-                alert('Zadejte platné URL!');
-                return;
-            }
+            startButton.disabled = true;
+            startButton.textContent = '🔄 Spouštím...';
             
-            // Resetuj výsledky
-            document.getElementById('results').classList.add('hidden');
-            document.getElementById('batches').innerHTML = '';
-            currentOffset = 0;
-            totalFound = 0;
-            
-            // Deaktivuj tlačítko
-            const btn = document.getElementById('scrapeBtn');
-            btn.disabled = true;
-            btn.textContent = testMode ? 'Testuji...' : 'Scrapuji...';
-            
-            showStatus(testMode ? '🧪 Testuji stránku (max 10 nástrojů)...' : '🔍 Prohledávám stránku...', 'loading');
-            
+            showStatus('Připravuji scraping...', 'info');
+
             try {
                 const response = await fetch('/scrape', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ url: url, test_mode: testMode })
+                    body: JSON.stringify({
+                        url: url,
+                        test_mode: testMode
+                    })
                 });
-                
+
                 const data = await response.json();
                 
                 if (data.success) {
-                    totalFound = data.total_found;
-                    showStatus(`✅ Nalezeno ${totalFound} AI nástrojů! Zobrazuji první dávku...`, 'success');
-                    
-                    if (data.urls.length > 0) {
-                        displayBatch(data.urls, 1);
-                        document.getElementById('results').classList.remove('hidden');
-                        
-                        if (data.has_more) {
-                            document.getElementById('loadMore').classList.remove('hidden');
-                            currentOffset = 50;
-                        }
-                    } else {
-                        showStatus('ℹ️ Na této stránce nebyly nalezeny žádné AI nástroje.', 'error');
-                    }
+                    currentJobId = data.job_id;
+                    showStatus(`✅ ${data.message}`, 'success');
+                    startStatusPolling();
                 } else {
-                    showStatus(`❌ Chyba: ${data.error}`, 'error');
+                    showStatus(`❌ ${data.message}`, 'error');
+                    resetUI();
                 }
             } catch (error) {
-                showStatus(`❌ Chyba při komunikaci se serverem: ${error.message}`, 'error');
-            } finally {
-                // Reaktivuj tlačítko
-                btn.disabled = false;
-                btn.textContent = 'Spustit Scraping';
+                showStatus(`❌ Chyba: ${error.message}`, 'error');
+                resetUI();
             }
         }
-        
-        async function loadNextBatch() {
-            showStatus('📥 Načítám další dávku...', 'loading');
+
+        function startStatusPolling() {
+            if (statusInterval) clearInterval(statusInterval);
+            
+            statusInterval = setInterval(async () => {
+                if (!currentJobId) return;
+                
+                try {
+                    const response = await fetch(`/status/${currentJobId}`);
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        updateStatus(data);
+                        
+                        if (data.status === 'completed') {
+                            clearInterval(statusInterval);
+                            loadResults();
+                            resetUI();
+                        } else if (data.status === 'error') {
+                            clearInterval(statusInterval);
+                            showStatus(`❌ ${data.message}`, 'error');
+                            resetUI();
+                        }
+                    }
+                } catch (error) {
+                    console.error('Chyba při načítání stavu:', error);
+                }
+            }, 2000); // Kontrola každé 2 sekundy
+        }
+
+        function updateStatus(statusData) {
+            const message = `${statusData.message} (Nalezeno: ${statusData.found_count})`;
+            showStatus(message, statusData.status);
+            
+            // Aktualizuj progress bar (odhad podle času)
+            if (statusData.status === 'running') {
+                const progress = Math.min(statusData.found_count * 2, 90); // Max 90% dokud není hotovo
+                document.getElementById('progressFill').style.width = progress + '%';
+            }
+        }
+
+        async function loadResults() {
+            if (!currentJobId) return;
             
             try {
-                const response = await fetch('/get_next_batch', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ offset: currentOffset })
-                });
-                
+                const response = await fetch(`/results/${currentJobId}?page=${currentPage}&per_page=50`);
                 const data = await response.json();
                 
-                if (data.urls.length > 0) {
-                    const batchNumber = Math.floor(currentOffset / 50) + 2;
-                    displayBatch(data.urls, batchNumber);
-                    currentOffset += 50;
-                    
-                    if (!data.has_more) {
-                        document.getElementById('loadMore').classList.add('hidden');
-                        showStatus('✅ Všechny AI nástroje byly načteny!', 'success');
-                    } else {
-                        hideStatus();
-                    }
-                } else {
-                    document.getElementById('loadMore').classList.add('hidden');
-                    showStatus('✅ Všechny AI nástroje byly načteny!', 'success');
+                if (data.success) {
+                    displayResults(data);
+                    document.getElementById('progressFill').style.width = '100%';
+                    showStatus(`✅ Hotovo! Nalezeno ${data.total_found} AI nástrojů.`, 'success');
                 }
             } catch (error) {
-                showStatus(`❌ Chyba při načítání další dávky: ${error.message}`, 'error');
+                showStatus(`❌ Chyba při načítání výsledků: ${error.message}`, 'error');
             }
         }
-        
-        function displayBatch(urls, batchNumber) {
-            const batchesContainer = document.getElementById('batches');
+
+        function displayResults(data) {
+            const resultsSection = document.getElementById('resultsSection');
+            const urlList = document.getElementById('urlList');
+            const resultsTitle = document.getElementById('resultsTitle');
+            const downloadBtn = document.getElementById('downloadBtn');
             
-            const batchDiv = document.createElement('div');
-            batchDiv.innerHTML = `
-                <div class="batch-header">
-                    <span class="batch-info">Dávka ${batchNumber} (${urls.length} URL)</span>
-                    <button class="copy-btn" onclick="copyBatch(${batchNumber})">📋 Kopírovat</button>
-                </div>
-                <div class="url-container" id="batch-${batchNumber}">${urls.join('\n')}</div>
-            `;
+            resultsTitle.textContent = `📋 Nalezené AI Nástroje (${data.total_found} celkem)`;
             
-            batchesContainer.appendChild(batchDiv);
-            
-            // Scroll na novou dávku
-            batchDiv.scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        function copyBatch(batchNumber) {
-            const container = document.getElementById(`batch-${batchNumber}`);
-            const text = container.textContent;
-            
-            navigator.clipboard.writeText(text).then(() => {
-                // Dočasně změň text tlačítka
-                const btn = event.target;
-                const originalText = btn.textContent;
-                btn.textContent = '✅ Zkopírováno!';
-                btn.style.backgroundColor = '#218838';
-                
-                setTimeout(() => {
-                    btn.textContent = originalText;
-                    btn.style.backgroundColor = '#28a745';
-                }, 2000);
-            }).catch(err => {
-                alert('Chyba při kopírování do schránky. Zkopírujte text ručně.');
-                console.error('Chyba kopírování:', err);
+            urlList.innerHTML = '';
+            data.urls.forEach((url, index) => {
+                const div = document.createElement('div');
+                div.className = 'url-item';
+                div.innerHTML = `${(currentPage - 1) * 50 + index + 1}. <a href="${url}" target="_blank">${url}</a>`;
+                urlList.appendChild(div);
             });
+            
+            // Nastavení stahování
+            downloadBtn.onclick = () => {
+                window.open(`/download/${currentJobId}`, '_blank');
+            };
+            
+            // Pagination
+            createPagination(data);
+            
+            resultsSection.style.display = 'block';
         }
-        
-        // Umožní spustit scraping stisknutím Enter
-        document.getElementById('urlInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                startScraping();
+
+        function createPagination(data) {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            
+            const totalPages = Math.ceil(data.total_found / 50);
+            
+            if (totalPages <= 1) return;
+            
+            // Předchozí stránka
+            if (currentPage > 1) {
+                const prevBtn = document.createElement('button');
+                prevBtn.className = 'page-btn';
+                prevBtn.textContent = '← Předchozí';
+                prevBtn.onclick = () => changePage(currentPage - 1);
+                pagination.appendChild(prevBtn);
             }
-        });
-    </script>
-</body>
+            
+            // Čísla stránek
+            const startPage = Math.max(1, currentPage - 2);
+            const endPage = Math.min(totalPages, currentPage + 2);
+            
+            for (let i = startPage; i <= endPage; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = 'page-btn';
+                pageBtn.textContent = i;
+                pageBtn.style.background = i === currentPage ? '#667eea' : '#6c757d';
+                pageBtn.onclick = () => changePage(i);
+                pagination.appendChild(pageBtn);
+            }
+            
+            // Další stránka
+            if (currentPage < totalPages) {
+                const nextBtn = document.createElement('button');
+                nextBtn.className = 'page-btn';
+                nextBtn.textContent = 'Další →';
+                nextBtn.onclick = () => changePage(currentPage + 1);
+                pagination.appendChild(nextBtn);
+            }
+        }
+
+        async function changePage(page) {
+            currentPage = page;
+            await loadResults();
+        }
+
+        function showStatus(message, type) {
+            const statusArea = document.getElementById('statusArea');
+            const statusMessage = document.getElementById('statusMessage');
+            
+            statusMessage.textContent = message;
+            statusMessage.className = type === 'error' ? 'error-message' : 
+                                     type === 'success' ? 'success-message' : 'status-message';
+            
+            statusArea.style.display = 'block';
+        }
+
+        function resetUI() {
+            const startButton = document.getElementById('startButton');
+            startButton.disabled = false;
+            startButton.textContent = '🚀 Spustit Scraping';
+        }
+
+        // Načti historii úloh při načtení stránky
+        async function loadJobsHistory() {
+            try {
+                const response = await fetch('/jobs');
+                const data = await response.json();
+                
+                const jobsList = document.getElementById('jobsList');
+                jobsList.innerHTML = '';
+                
+                if (data.jobs && data.jobs.length > 0) {
+                    data.jobs.forEach(job => {
+                        const jobDiv = document.createElement('div');
+                        jobDiv.className = 'job-item';
+                        
+                        const date = new Date(job.timestamp).toLocaleString('cs-CZ');
+                        
+                        jobDiv.innerHTML = `
+                            <div class="job-status ${job.status}">${job.status.toUpperCase()}</div>
+                            <div>ID: ${job.job_id}</div>
+                            <div>${job.message}</div>
+                            <div>Nalezeno: ${job.found_count} nástrojů</div>
+                            <div>Čas: ${date}</div>
+                            ${job.status === 'completed' ? 
+                                `<button onclick="loadOldJob('${job.job_id}')" style="margin-top: 10px; padding: 5px 10px; width: auto;">Zobrazit výsledky</button>` : 
+                                ''}
+                        `;
+                        
+                        jobsList.appendChild(jobDiv);
+                    });
+                } else {
+                    jobsList.innerHTML = '<p>Zatím žádné úlohy.</p>';
+                }
+            } catch (error) {
+                console.error('Chyba při načítání historie:', error);
+            }
+        }
+
+        async function loadOldJob(jobId) {
+            currentJobId = jobId;
+            currentPage = 1;
+            await loadResults();
+        }
+
+        // Načti historii při načtení stránky
+        window.addEventListener('load', loadJobsHistory);
+          </script>
+  </body>
 </html> 
